@@ -1,0 +1,410 @@
+package com.Grownited.util;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.List;
+
+import com.Grownited.entity.IncomeEntity;
+
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
+
+import com.Grownited.entity.ExpenseEntity;
+
+public class PdfGenerator {
+
+	// User Income List 
+    public static ByteArrayInputStream generateIncomePdf(List<IncomeEntity> incomes) {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        try {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            // ================= LOGO =================
+            InputStream is = PdfGenerator.class.getResourceAsStream("/static/assets/images/logo.png");
+
+            if (is != null) {
+                byte[] imageBytes = is.readAllBytes();
+                Image logo = new Image(ImageDataFactory.create(imageBytes));
+                logo.setWidth(80);
+                logo.setHorizontalAlignment(HorizontalAlignment.LEFT);
+                document.add(logo);
+            } else {
+                System.out.println("Logo not found!");
+            }
+
+            // ================= HEADER =================
+            document.add(new Paragraph("Expense Tracker")
+                    .setBold()
+                    .setFontSize(20)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Income Report")
+                    .setFontSize(14)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Generated on: " + java.time.LocalDate.now())
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\n"));
+
+            // ================= TABLE =================
+            Table table = new Table(UnitValue.createPercentArray(new float[]{1, 3, 2, 2, 4}));
+            table.setWidth(UnitValue.createPercentValue(100));
+
+            // HEADER STYLE
+            String[] headers = {"Sr. No", "Title", "Date", "Amount", "Description"};
+            
+            for (String h : headers) {
+                table.addHeaderCell(
+                        new Paragraph(h)
+                                .setBold()
+                                .setFontColor(ColorConstants.WHITE)
+                                .setBackgroundColor(ColorConstants.BLUE)
+                                .setTextAlignment(TextAlignment.CENTER)
+                );
+            }
+
+            double total = 0;
+            int i = 0;
+            int srNo = 1;   // ✅ ADD THIS
+
+            // ================= DATA =================
+            for (IncomeEntity income : incomes) {
+
+                double amount = income.getAmount() != null ? income.getAmount() : 0;
+                total += amount;
+
+                // Zebra row color
+                com.itextpdf.kernel.colors.Color bg =
+                        (i % 2 == 0) ? ColorConstants.LIGHT_GRAY : ColorConstants.WHITE;
+
+                // ✅ SERIAL NUMBER (FIXED)
+                table.addCell(new Paragraph(String.valueOf(srNo++)).setBackgroundColor(bg));
+
+                table.addCell(new Paragraph(
+                        income.getTitle() != null ? income.getTitle() : "-").setBackgroundColor(bg));
+
+                table.addCell(new Paragraph(
+                        income.getDate() != null ? income.getDate().toString() : "-").setBackgroundColor(bg));
+
+                table.addCell(new Paragraph(
+                        "₹ " + String.format("%,.2f", amount)).setBackgroundColor(bg));
+
+                table.addCell(new Paragraph(
+                        income.getDescription() != null ? income.getDescription() : "-").setBackgroundColor(bg));
+
+                i++;
+            }
+
+            document.add(table);
+
+            document.add(new Paragraph("\n"));
+
+            // ================= SUMMARY =================
+            document.add(new Paragraph("Total Income: ₹ " + String.format("%,.2f", total))
+                    .setBold()
+                    .setFontSize(12)
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\n"));
+
+            // ================= FOOTER =================
+            document.add(new Paragraph("Generated by Expense Tracker System")
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(ColorConstants.GRAY));
+
+            document.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ByteArrayInputStream(out.toByteArray());
+    }
+    
+    // User Expese List 
+    
+    public static ByteArrayInputStream generateExpensePdf(List<ExpenseEntity> expenses) {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        try {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            // ================= LOGO =================
+            InputStream is = PdfGenerator.class.getResourceAsStream("/static/assets/images/logo.png");
+
+            if (is != null) {
+                byte[] imageBytes = is.readAllBytes();
+                Image logo = new Image(ImageDataFactory.create(imageBytes));
+                logo.setWidth(80);
+                logo.setHorizontalAlignment(HorizontalAlignment.LEFT);
+                document.add(logo);
+            }
+
+            // ================= HEADER =================
+            document.add(new Paragraph("Expense Tracker")
+                    .setBold()
+                    .setFontSize(20)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Expense Report")
+                    .setFontSize(14)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Generated on: " + java.time.LocalDate.now())
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\n"));
+
+            // ================= TABLE =================
+            Table table = new Table(UnitValue.createPercentArray(new float[]{1, 3, 3, 3, 2, 2, 2}));
+            table.setWidth(UnitValue.createPercentValue(100));
+
+            String[] headers = {"Sr. No", "Title", "Category", "Vendor", "Amount", "Date", "Status"};
+
+            for (String h : headers) {
+                table.addHeaderCell(
+                        new Paragraph(h)
+                                .setBold()
+                                .setFontColor(ColorConstants.WHITE)
+                                .setBackgroundColor(ColorConstants.BLUE)
+                                .setTextAlignment(TextAlignment.CENTER)
+                );
+            }
+
+            double total = 0;
+            int i = 0;
+            int srNo = 1;
+
+            // ================= DATA =================
+            for (ExpenseEntity exp : expenses) {
+
+                double amount = exp.getAmount() != null ? exp.getAmount() : 0;
+                total += amount;
+
+                com.itextpdf.kernel.colors.Color bg =
+                        (i % 2 == 0) ? ColorConstants.LIGHT_GRAY : ColorConstants.WHITE;
+
+                // Sr No
+                table.addCell(new Paragraph(String.valueOf(srNo++)).setBackgroundColor(bg));
+
+                // Title
+                table.addCell(new Paragraph(
+                        exp.getTitle() != null ? exp.getTitle() : "-"
+                ).setBackgroundColor(bg));
+
+                // ✅ CATEGORY FIXED HERE
+                table.addCell(new Paragraph(
+                        (exp.getCategory() != null && exp.getCategory().getCategoryName() != null)
+                                ? exp.getCategory().getCategoryName()
+                                : "-"
+                ).setBackgroundColor(bg));
+
+                // Vendor
+                table.addCell(new Paragraph(
+                        (exp.getVendor() != null && exp.getVendor().getVendorName() != null)
+                                ? exp.getVendor().getVendorName()
+                                : "-"
+                ).setBackgroundColor(bg));
+
+                // Amount
+                table.addCell(new Paragraph(
+                        "₹ " + String.format("%,.2f", amount)
+                ).setBackgroundColor(bg));
+
+                // Date
+                table.addCell(new Paragraph(
+                        exp.getDate() != null ? exp.getDate().toString() : "-"
+                ).setBackgroundColor(bg));
+
+                // Status
+                table.addCell(new Paragraph(
+                        (exp.getStatus() != null && exp.getStatus().getStatus() != null)
+                                ? exp.getStatus().getStatus()
+                                : "-"
+                ).setBackgroundColor(bg));
+
+                i++;
+            }
+
+            document.add(table);
+
+            document.add(new Paragraph("\n"));
+
+            // ================= SUMMARY =================
+            document.add(new Paragraph("Total Expense: ₹ " + String.format("%,.2f", total))
+                    .setBold()
+                    .setFontSize(12)
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\n"));
+
+            // ================= FOOTER =================
+            document.add(new Paragraph("Generated by Expense Tracker System")
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(ColorConstants.GRAY));
+
+            document.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ByteArrayInputStream(out.toByteArray());
+    }
+    
+    //full report 
+    
+    public static ByteArrayInputStream generateFullReportPdf(
+            List<IncomeEntity> incomes,
+            List<ExpenseEntity> expenses) {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        try {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            // ================= HEADER =================
+            document.add(new Paragraph("Expense Tracker")
+                    .setBold().setFontSize(20)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Full Financial Report")
+                    .setFontSize(14)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Generated on: " + java.time.LocalDate.now())
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\n"));
+
+            // ================= INCOME TABLE =================
+            document.add(new Paragraph("Income Details")
+                    .setBold().setFontSize(14));
+
+            Table incomeTable = new Table(UnitValue.createPercentArray(new float[]{1,3,2,2}));
+            incomeTable.setWidth(UnitValue.createPercentValue(100));
+
+            String[] incomeHeaders = {"Sr No", "Title", "Date", "Amount"};
+
+            for (String h : incomeHeaders) {
+                incomeTable.addHeaderCell(new Paragraph(h)
+                        .setBold()
+                        .setBackgroundColor(ColorConstants.BLUE)
+                        .setFontColor(ColorConstants.WHITE));
+            }
+
+            double totalIncome = 0;
+            int sr = 1;
+
+            for (IncomeEntity inc : incomes) {
+                double amt = inc.getAmount() != null ? inc.getAmount() : 0;
+                totalIncome += amt;
+
+                incomeTable.addCell(String.valueOf(sr++));
+                incomeTable.addCell(inc.getTitle() != null ? inc.getTitle() : "-");
+                incomeTable.addCell(inc.getDate() != null ? inc.getDate().toString() : "-");
+                incomeTable.addCell("₹ " + String.format("%,.2f", amt));
+            }
+
+            document.add(incomeTable);
+
+            document.add(new Paragraph("Total Income: ₹ " + String.format("%,.2f", totalIncome))
+                    .setBold()
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\n"));
+
+            // ================= EXPENSE TABLE =================
+            document.add(new Paragraph("Expense Details")
+                    .setBold().setFontSize(14));
+
+            Table expTable = new Table(UnitValue.createPercentArray(new float[]{1,3,3,2}));
+            expTable.setWidth(UnitValue.createPercentValue(100));
+
+            String[] expHeaders = {"Sr No", "Title", "Category", "Amount"};
+
+            for (String h : expHeaders) {
+                expTable.addHeaderCell(new Paragraph(h)
+                        .setBold()
+                        .setBackgroundColor(ColorConstants.RED)
+                        .setFontColor(ColorConstants.WHITE));
+            }
+
+            double totalExpense = 0;
+            int sr2 = 1;
+
+            for (ExpenseEntity exp : expenses) {
+                double amt = exp.getAmount() != null ? exp.getAmount() : 0;
+                totalExpense += amt;
+
+                expTable.addCell(String.valueOf(sr2++));
+                expTable.addCell(exp.getTitle() != null ? exp.getTitle() : "-");
+
+                expTable.addCell(
+                    (exp.getCategory() != null && exp.getCategory().getCategoryName() != null)
+                        ? exp.getCategory().getCategoryName()
+                        : "-"
+                );
+
+                expTable.addCell("₹ " + String.format("%,.2f", amt));
+            }
+
+            document.add(expTable);
+
+            document.add(new Paragraph("Total Expense: ₹ " + String.format("%,.2f", totalExpense))
+                    .setBold()
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\n"));
+
+            // ================= BALANCE =================
+            double balance = totalIncome - totalExpense;
+
+            document.add(new Paragraph("Final Balance: ₹ " + String.format("%,.2f", balance))
+                    .setBold()
+                    .setFontSize(14)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(balance >= 0 ? ColorConstants.GREEN : ColorConstants.RED));
+
+            // ================= FOOTER =================
+            document.add(new Paragraph("\nGenerated by Expense Tracker System")
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontColor(ColorConstants.GRAY));
+
+            document.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ByteArrayInputStream(out.toByteArray());
+    }
+    
+    
+}
