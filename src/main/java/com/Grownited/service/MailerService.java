@@ -24,17 +24,6 @@ import com.Grownited.entity.UserEntity;
 		@Autowired
 		private ResourceLoader resourceLoader;
 
-//		public void sendWelcomeMail(UserEntity user) {
-	//	
-//			SimpleMailMessage message = new SimpleMailMessage(); 
-//			
-//			message.setTo(user.getEmail());
-//			message.setFrom("tejasshah2k19@gmail.com");
-//			message.setSubject("CodeVerse - Welcome aboard !!! ");
-//			message.setText("Hey "+user.getFirstName()+", We are happy to on board in CodeVerse.");
-	//	
-//			javaMailSender.send(message);
-//		}
 
 		public void sendWelcomeMail(UserEntity user) {
 

@@ -9,7 +9,7 @@
                 </span>
                 <br>
                 <small class="text-muted">
-                    Developed by <b>Mihir Prajapati</b>
+                    Developed by <b>Kushal Darji</b>
                 </small>
             </div>
 

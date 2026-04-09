@@ -26,9 +26,9 @@ public class ExpenseTrackerApplication {
 	@Bean
 	Cloudinary getCloudinary() {
 		Map<String, String> config = new HashMap<>();
-		config.put("cloud_name", "dbjjrs6bo");
-		config.put("api_key", "693385234672774");
-		config.put("api_secret", "E_GQW-rswZu-rSXMrco_9JodW2I");
+		config.put("cloud_name", "djbjehc6m");
+		config.put("api_key", "586198461234981");
+		config.put("api_secret", "H_ySgDbRIQWCwZccXgAwJUTgnIU");
 		return new Cloudinary(config);
 	}	
 	
