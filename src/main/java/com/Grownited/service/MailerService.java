@@ -1,73 +1,72 @@
 package com.Grownited.service;
 
+import java.nio.charset.StandardCharsets;
 
-	import java.nio.charset.StandardCharsets;
-
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.core.io.Resource;
-	import org.springframework.core.io.ResourceLoader;
-	import org.springframework.mail.javamail.JavaMailSender;
-	import org.springframework.mail.javamail.MimeMessageHelper;
-	import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
 import com.Grownited.entity.UserEntity;
+import jakarta.mail.internet.MimeMessage;
 
+@Service
+public class MailerService {
 
-	import jakarta.mail.internet.MimeMessage;
+	@Autowired
+	JavaMailSender javaMailSender;
 
-	@Service
-	public class MailerService {
+	@Autowired
+	private ResourceLoader resourceLoader;
 
-		@Autowired
-		JavaMailSender javaMailSender;
+	public void sendWelcomeMail(UserEntity user) {
 
-		@Autowired
-		private ResourceLoader resourceLoader;
+		MimeMessage message = javaMailSender.createMimeMessage();
 
+		Resource resource = resourceLoader.getResource("classpath:templates/WelcomeMailTempate.html");
 
-		public void sendWelcomeMail(UserEntity user) {
+		try {
+			String html = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
-		    if (user == null) {
-		        System.out.println("User is null. Mail not sent.");
-		        return;
-		    }
+			MimeMessageHelper helper;
 
-		    String firstName = user.getFirstName() != null ? user.getFirstName() : "User";
-		    String email = user.getEmail();
+			String body = html.replace("${name}", user.getFirstName()).replace("${email}", user.getEmail())
+					.replace("${loginUrl}", "http://localhost:9999/login").replace("${companyName}", "MoneyTrail");
 
-		    if (email == null || email.isEmpty()) {
-		        System.out.println("Email is null. Mail not sent.");
-		        return;
-		    }
+			helper = new MimeMessageHelper(message, true);
+			helper.setTo(user.getEmail());
+			helper.setSubject("MoneyTrail - Welcome aboard !!! ");
+			helper.setText(body, true);
 
-		    try {
-
-		        MimeMessage message = javaMailSender.createMimeMessage();
-		        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-		        Resource resource = resourceLoader.getResource("classpath:templates/WelcomeMailTempate.html");
-		        String html = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-
-		        String body = html
-		                .replace("${name}", firstName)
-		                .replace("${email}", email)
-		                .replace("${loginUrl}", "http://localhost:9999/login")
-		                .replace("${companyName}", "ExpenseTracker");
-
-		        helper.setTo(email);
-		        helper.setSubject("ExpenseTracker - Welcome aboard !!! ");
-		        helper.setText(body, true);
-
-		        javaMailSender.send(message);
-
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
+			javaMailSender.send(message);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		
-		
 	}
-	
-	
+	public void sendOtpMail(UserEntity user) {
+		 MimeMessage message = javaMailSender.createMimeMessage();
+		 Resource resource = resourceLoader.getResource("classpath:templates/OtpMailTemplate.html");
 
+	    try {
+	    	String html = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+
+	        String body = html
+	                .replace("${name}", user.getFirstName())
+	                .replace("${otp}", user.getOtp())
+	                .replace("${companyName}", "MoneyTrail");
+	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        
+	        helper.setTo(user.getEmail());
+	        helper.setSubject("MoneyTrail - Password Reset OTP");
+	        helper.setText(body, true);
+	        javaMailSender.send(message);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+}

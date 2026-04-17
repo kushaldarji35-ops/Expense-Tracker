@@ -9,7 +9,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Expense Tracker User</title>
+<title>MoneyTrail User</title>
 
 <jsp:include page="UserCSS.jsp"></jsp:include>
 

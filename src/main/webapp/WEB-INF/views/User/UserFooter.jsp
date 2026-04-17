@@ -5,7 +5,7 @@
             <!-- LEFT -->
             <div class="col-md-4 text-md-start text-center mb-2 mb-md-0">
                 <span>
-                    2026 <strong>Expense Tracker</strong>
+                    2026 <strong>MoneyTrail</strong>
                 </span>
                 <br>
                 <small class="text-muted">

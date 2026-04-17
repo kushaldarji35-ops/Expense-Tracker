@@ -8,7 +8,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Add Expense | Expense Tracker</title>
+<title>Add Expense</title>
 
 <!-- USER CSS -->
 <jsp:include page="UserCSS.jsp"></jsp:include>

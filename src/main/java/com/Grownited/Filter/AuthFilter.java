@@ -1,4 +1,4 @@
-package com.Grownited.Filter;
+ package com.Grownited.Filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ public class AuthFilter implements Filter {
 		publicUrl.add("/reset-password");
 		publicUrl.add("/verify-otp");
 		publicUrl.add("/register");
+		publicUrl.add("/send-otp"); 
 		
 
 

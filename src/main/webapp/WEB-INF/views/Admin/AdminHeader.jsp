@@ -5,14 +5,14 @@
   <!-- Logo -->
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
     <a class="navbar-brand fw-bold fs-4 text-dark" href="<c:url value='/user/dashboard'/>">
-        Expense Tracker
+        MoneyTrail
     </a>
   </div>
 
   <!-- Right Navbar -->
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
 
-    <!-- Sidebar Toggle -->
+     <!-- Sidebar Toggle -->
     <button class="navbar-toggler align-self-center" type="button" data-toggle="minimize">
       <span class="icon-menu"></span>
     </button>

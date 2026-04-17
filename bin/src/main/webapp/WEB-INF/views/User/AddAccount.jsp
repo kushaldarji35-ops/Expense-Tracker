@@ -8,7 +8,7 @@ pageEncoding="UTF-8"%>
 <head>
 
 <meta charset="UTF-8">
-<title>My Accounts | Expense Tracker</title>
+<title>My Accounts </title>
 
 <!-- USER CSS -->
 <jsp:include page="UserCSS.jsp"></jsp:include>

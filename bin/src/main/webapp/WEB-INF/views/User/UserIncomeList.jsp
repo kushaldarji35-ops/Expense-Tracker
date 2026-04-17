@@ -8,7 +8,7 @@ pageEncoding="UTF-8"%>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>My Income | Expense Tracker</title>
+<title>My Income</title>
 
 <!-- USER CSS -->
 

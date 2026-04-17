@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Add Income | Expense Tracker</title>
+<title>Add Income</title>
 
 <!-- USER CSS -->
 <jsp:include page="UserCSS.jsp"></jsp:include>

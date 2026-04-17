@@ -7,7 +7,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Expense Tracker Admin</title>
+<title>MoneyTrail Admin</title>
 
 <jsp:include page="AdminCSS.jsp"></jsp:include>
 

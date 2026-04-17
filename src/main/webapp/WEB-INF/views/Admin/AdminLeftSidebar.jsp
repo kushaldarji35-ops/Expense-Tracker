@@ -26,26 +26,7 @@
       </div>
     </li>
 
-    <!-- Account -->
-    <li class="nav-item">
-      <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#account-menu">
-        <i class="ti-wallet menu-icon"></i>
-        <span class="menu-title">Account</span>
-        <i class="menu-arrow"></i>
-      </a>
-
-      <div class="collapse" id="account-menu">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/account">Add Account</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/accountList">Account List</a>
-          </li>
-        </ul>
-      </div>
-    </li>
-
+    
     <!-- Category -->
     <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#category-menu">
@@ -105,6 +86,27 @@
         </ul>
       </div>
     </li>
+    
+    <!-- Account -->
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#account-menu">
+        <i class="ti-wallet menu-icon"></i>
+        <span class="menu-title">Account</span>
+        <i class="menu-arrow"></i>
+      </a>
+
+      <div class="collapse" id="account-menu">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/account">Add Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/accountList">Account List</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    
 
     <!-- Status -->
     <li class="nav-item">

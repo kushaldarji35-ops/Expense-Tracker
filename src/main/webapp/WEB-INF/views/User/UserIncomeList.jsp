@@ -19,8 +19,6 @@ pageEncoding="UTF-8"%>
 <body>
 
 <div class="container-scroller">
-
-```
 <!-- USER HEADER -->
 <jsp:include page="UserHeader.jsp"></jsp:include>
 
@@ -238,7 +236,6 @@ pageEncoding="UTF-8"%>
     </div>
 
 </div>
-```
 
 </div>
 

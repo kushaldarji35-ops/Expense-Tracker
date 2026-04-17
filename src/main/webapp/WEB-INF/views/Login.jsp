@@ -193,7 +193,7 @@ a {
                 <!-- Remember -->
                 <div class="remember mb-2">
                     <label><input type="checkbox"> Remember me</label>
-                    <a href="forgot-password">Forgot?</a>
+                    <a href="/forgot-password">Forgot?</a>
                 </div>
 
                 <div class="d-grid mb-3">

@@ -87,6 +87,11 @@
 
                                     <tr>
                                         <th>Contact Number</th>
+                                        <td>${user.gender}</td>
+                                    </tr>
+                                    
+                                     <tr>
+                                        <th>Gender</th>
                                         <td>${user.contactNum}</td>
                                     </tr>
 
